@@ -1,0 +1,446 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9C459007150540B000E891FF /* BSAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C459000150540B000E891FF /* BSAddressComponent.m */; };
+		9C459008150540B000E891FF /* BSForwardGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C459002150540B000E891FF /* BSForwardGeocoder.m */; };
+		9C459009150540B000E891FF /* BSGoogleV3KmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C459004150540B000E891FF /* BSGoogleV3KmlParser.m */; };
+		9C45900A150540B000E891FF /* BSKmlResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C459006150540B000E891FF /* BSKmlResult.m */; };
+		9C459012150540BC00E891FF /* CustomPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C45900D150540BC00E891FF /* CustomPlacemark.m */; };
+		9C459014150540BC00E891FF /* Forward_GeocodingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C459011150540BC00E891FF /* Forward_GeocodingViewController.m */; };
+		9C459017150542C100E891FF /* Forward_Geocoding-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C459016150542C100E891FF /* Forward_Geocoding-Info.plist */; };
+		9C4590191505443F00E891FF /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C4590181505443F00E891FF /* MapKit.framework */; };
+		9C8C7138150F716900DB8005 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8C7137150F716800DB8005 /* MKMapView+ZoomLevel.m */; };
+		9C9193241511E2330025D052 /* StateViewContrller.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9193231511E2320025D052 /* StateViewContrller.m */; };
+		9C91932C151213840025D052 /* VINCompareAccessoryButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C91932B151213840025D052 /* VINCompareAccessoryButton.png */; };
+		9C92CB5C150BE12500093CCE /* Poc.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 9C92CB5B150BE12400093CCE /* Poc.xcdatamodel */; };
+		9C92CB5F150BE14B00093CCE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C92CB5E150BE14B00093CCE /* CoreData.framework */; };
+		9C9B21A1150DBE610027560E /* StateDetailPopOverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9B21A0150DBE610027560E /* StateDetailPopOverController.m */; };
+		9CA747BD1505DCF500177DD2 /* MapCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA747BC1505DCF500177DD2 /* MapCategoryViewController.m */; };
+		9CA747BF1505E0B800177DD2 /* dashboard.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CA747BE1505E0B800177DD2 /* dashboard.jpg */; };
+		9CA9B30515090C2600B0CA71 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA9B30415090C2600B0CA71 /* QuartzCore.framework */; };
+		9CB0FE391505D41E00BD6A84 /* DashBoardController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB0FE381505D41E00BD6A84 /* DashBoardController.m */; };
+		9CB355991505212200BAB050 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB355981505212200BAB050 /* UIKit.framework */; };
+		9CB3559B1505212200BAB050 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB3559A1505212200BAB050 /* Foundation.framework */; };
+		9CB3559D1505212200BAB050 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB3559C1505212200BAB050 /* CoreGraphics.framework */; };
+		9CB355A31505212200BAB050 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CB355A11505212200BAB050 /* InfoPlist.strings */; };
+		9CB355A51505212200BAB050 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB355A41505212200BAB050 /* main.m */; };
+		9CB355A91505212200BAB050 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB355A81505212200BAB050 /* AppDelegate.m */; };
+		9CB355AC1505212200BAB050 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CB355AA1505212200BAB050 /* MainStoryboard.storyboard */; };
+		9CB355AF1505212200BAB050 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB355AE1505212200BAB050 /* MainViewController.m */; };
+		9CB355BE1505225400BAB050 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB355BD1505225400BAB050 /* background.png */; };
+		9CB355CD1505254200BAB050 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB355CC1505254200BAB050 /* MapViewController.m */; };
+		9CBA4466150DCB8900023342 /* popups_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CBA4465150DCB8900023342 /* popups_bg.png */; };
+		9CC4B729150785E400FD4EA4 /* State.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC4B728150785E400FD4EA4 /* State.m */; };
+		9CC66DB81516246C00B7B0DE /* CountyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC66DB71516246C00B7B0DE /* CountyDetailViewController.m */; };
+		9CE75D1915053A14007450C9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE75D1815053A14007450C9 /* CoreLocation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9C458FFF150540B000E891FF /* BSAddressComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSAddressComponent.h; sourceTree = "<group>"; };
+		9C459000150540B000E891FF /* BSAddressComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSAddressComponent.m; sourceTree = "<group>"; };
+		9C459001150540B000E891FF /* BSForwardGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSForwardGeocoder.h; sourceTree = "<group>"; };
+		9C459002150540B000E891FF /* BSForwardGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSForwardGeocoder.m; sourceTree = "<group>"; };
+		9C459003150540B000E891FF /* BSGoogleV3KmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSGoogleV3KmlParser.h; sourceTree = "<group>"; };
+		9C459004150540B000E891FF /* BSGoogleV3KmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSGoogleV3KmlParser.m; sourceTree = "<group>"; };
+		9C459005150540B000E891FF /* BSKmlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKmlResult.h; sourceTree = "<group>"; };
+		9C459006150540B000E891FF /* BSKmlResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSKmlResult.m; sourceTree = "<group>"; };
+		9C45900C150540BC00E891FF /* CustomPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomPlacemark.h; path = Classes/CustomPlacemark.h; sourceTree = "<group>"; };
+		9C45900D150540BC00E891FF /* CustomPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomPlacemark.m; path = Classes/CustomPlacemark.m; sourceTree = "<group>"; };
+		9C459010150540BC00E891FF /* Forward_GeocodingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Forward_GeocodingViewController.h; path = Classes/Forward_GeocodingViewController.h; sourceTree = "<group>"; };
+		9C459011150540BC00E891FF /* Forward_GeocodingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Forward_GeocodingViewController.m; path = Classes/Forward_GeocodingViewController.m; sourceTree = "<group>"; };
+		9C459015150542B400E891FF /* Forward_Geocoding_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Forward_Geocoding_Prefix.pch; sourceTree = "<group>"; };
+		9C459016150542C100E891FF /* Forward_Geocoding-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Forward_Geocoding-Info.plist"; sourceTree = "<group>"; };
+		9C4590181505443F00E891FF /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9C8C7124150F266D00DB8005 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		9C8C7136150F716100DB8005 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
+		9C8C7137150F716800DB8005 /* MKMapView+ZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+ZoomLevel.m"; sourceTree = "<group>"; };
+		9C9193221511E2320025D052 /* StateViewContrller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateViewContrller.h; sourceTree = "<group>"; };
+		9C9193231511E2320025D052 /* StateViewContrller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StateViewContrller.m; sourceTree = "<group>"; };
+		9C91932B151213840025D052 /* VINCompareAccessoryButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VINCompareAccessoryButton.png; sourceTree = "<group>"; };
+		9C92CB5B150BE12400093CCE /* Poc.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Poc.xcdatamodel; sourceTree = "<group>"; };
+		9C92CB5E150BE14B00093CCE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		9C9B219F150DBE610027560E /* StateDetailPopOverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StateDetailPopOverController.h; path = Classes/StateDetailPopOverController.h; sourceTree = "<group>"; };
+		9C9B21A0150DBE610027560E /* StateDetailPopOverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StateDetailPopOverController.m; path = Classes/StateDetailPopOverController.m; sourceTree = "<group>"; };
+		9CA747BB1505DCF500177DD2 /* MapCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapCategoryViewController.h; sourceTree = "<group>"; };
+		9CA747BC1505DCF500177DD2 /* MapCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapCategoryViewController.m; sourceTree = "<group>"; };
+		9CA747BE1505E0B800177DD2 /* dashboard.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dashboard.jpg; sourceTree = "<group>"; };
+		9CA9B30415090C2600B0CA71 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		9CB0FE371505D41E00BD6A84 /* DashBoardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DashBoardController.h; path = Classes/DashBoardController.h; sourceTree = "<group>"; };
+		9CB0FE381505D41E00BD6A84 /* DashBoardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DashBoardController.m; path = Classes/DashBoardController.m; sourceTree = "<group>"; };
+		9CB355941505212200BAB050 /* Poc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Poc.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CB355981505212200BAB050 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9CB3559A1505212200BAB050 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9CB3559C1505212200BAB050 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9CB355A01505212200BAB050 /* Poc-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Poc-Info.plist"; sourceTree = "<group>"; };
+		9CB355A21505212200BAB050 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9CB355A41505212200BAB050 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9CB355A61505212200BAB050 /* Poc-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Poc-Prefix.pch"; sourceTree = "<group>"; };
+		9CB355A71505212200BAB050 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9CB355A81505212200BAB050 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9CB355AB1505212200BAB050 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		9CB355AD1505212200BAB050 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		9CB355AE1505212200BAB050 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		9CB355BD1505225400BAB050 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		9CB355CC1505254200BAB050 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		9CBA4465150DCB8900023342 /* popups_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popups_bg.png; sourceTree = "<group>"; };
+		9CC4B727150785DB00FD4EA4 /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
+		9CC4B728150785E400FD4EA4 /* State.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = State.m; sourceTree = "<group>"; };
+		9CC66DB61516246C00B7B0DE /* CountyDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountyDetailViewController.h; sourceTree = "<group>"; };
+		9CC66DB71516246C00B7B0DE /* CountyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountyDetailViewController.m; sourceTree = "<group>"; };
+		9CE75D1815053A14007450C9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9CB355911505212200BAB050 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C92CB5F150BE14B00093CCE /* CoreData.framework in Frameworks */,
+				9CA9B30515090C2600B0CA71 /* QuartzCore.framework in Frameworks */,
+				9C4590191505443F00E891FF /* MapKit.framework in Frameworks */,
+				9CE75D1915053A14007450C9 /* CoreLocation.framework in Frameworks */,
+				9CB355991505212200BAB050 /* UIKit.framework in Frameworks */,
+				9CB3559B1505212200BAB050 /* Foundation.framework in Frameworks */,
+				9CB3559D1505212200BAB050 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9C458FFE150540B000E891FF /* Forward Geocoder */ = {
+			isa = PBXGroup;
+			children = (
+				9C458FFF150540B000E891FF /* BSAddressComponent.h */,
+				9C459000150540B000E891FF /* BSAddressComponent.m */,
+				9C459001150540B000E891FF /* BSForwardGeocoder.h */,
+				9C459002150540B000E891FF /* BSForwardGeocoder.m */,
+				9C459003150540B000E891FF /* BSGoogleV3KmlParser.h */,
+				9C459004150540B000E891FF /* BSGoogleV3KmlParser.m */,
+				9C459005150540B000E891FF /* BSKmlResult.h */,
+				9C459006150540B000E891FF /* BSKmlResult.m */,
+			);
+			path = "Forward Geocoder";
+			sourceTree = "<group>";
+		};
+		9C45900B150540BC00E891FF /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9C459016150542C100E891FF /* Forward_Geocoding-Info.plist */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		9C8C711A150F222400DB8005 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9CB355AD1505212200BAB050 /* MainViewController.h */,
+				9CB355AE1505212200BAB050 /* MainViewController.m */,
+				9CA747BB1505DCF500177DD2 /* MapCategoryViewController.h */,
+				9CA747BC1505DCF500177DD2 /* MapCategoryViewController.m */,
+				9C459010150540BC00E891FF /* Forward_GeocodingViewController.h */,
+				9C459011150540BC00E891FF /* Forward_GeocodingViewController.m */,
+				9C9193221511E2320025D052 /* StateViewContrller.h */,
+				9C9193231511E2320025D052 /* StateViewContrller.m */,
+				9C8C7137150F716800DB8005 /* MKMapView+ZoomLevel.m */,
+				9C9B219F150DBE610027560E /* StateDetailPopOverController.h */,
+				9C9B21A0150DBE610027560E /* StateDetailPopOverController.m */,
+				9CC66DB61516246C00B7B0DE /* CountyDetailViewController.h */,
+				9CC66DB71516246C00B7B0DE /* CountyDetailViewController.m */,
+				9C8C7136150F716100DB8005 /* MKMapView+ZoomLevel.h */,
+				9CB355CC1505254200BAB050 /* MapViewController.m */,
+				9C8C7124150F266D00DB8005 /* MapViewController.h */,
+				9CB0FE371505D41E00BD6A84 /* DashBoardController.h */,
+				9CB0FE381505D41E00BD6A84 /* DashBoardController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		9CB355891505212200BAB050 = {
+			isa = PBXGroup;
+			children = (
+				9C92CB5E150BE14B00093CCE /* CoreData.framework */,
+				9CB3559E1505212200BAB050 /* Poc */,
+				9CB355971505212200BAB050 /* Frameworks */,
+				9CB355951505212200BAB050 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9CB355951505212200BAB050 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9CB355941505212200BAB050 /* Poc.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9CB355971505212200BAB050 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9CB355981505212200BAB050 /* UIKit.framework */,
+				9CA9B30415090C2600B0CA71 /* QuartzCore.framework */,
+				9C4590181505443F00E891FF /* MapKit.framework */,
+				9CE75D1815053A14007450C9 /* CoreLocation.framework */,
+				9CB3559A1505212200BAB050 /* Foundation.framework */,
+				9CB3559C1505212200BAB050 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9CB3559E1505212200BAB050 /* Poc */ = {
+			isa = PBXGroup;
+			children = (
+				9CB355A71505212200BAB050 /* AppDelegate.h */,
+				9CB355A81505212200BAB050 /* AppDelegate.m */,
+				9CB355AA1505212200BAB050 /* MainStoryboard.storyboard */,
+				9C8C711A150F222400DB8005 /* ViewControllers */,
+				9C92CB5B150BE12400093CCE /* Poc.xcdatamodel */,
+				9CC4B7251507858900FD4EA4 /* Model */,
+				9C458FFE150540B000E891FF /* Forward Geocoder */,
+				9C45900B150540BC00E891FF /* Classes */,
+				9CB3559F1505212200BAB050 /* Supporting Files */,
+			);
+			path = Poc;
+			sourceTree = "<group>";
+		};
+		9CB3559F1505212200BAB050 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9CB355BD1505225400BAB050 /* background.png */,
+				9CA747BE1505E0B800177DD2 /* dashboard.jpg */,
+				9C91932B151213840025D052 /* VINCompareAccessoryButton.png */,
+				9CBA4465150DCB8900023342 /* popups_bg.png */,
+				9CB355A01505212200BAB050 /* Poc-Info.plist */,
+				9C459015150542B400E891FF /* Forward_Geocoding_Prefix.pch */,
+				9CB355A11505212200BAB050 /* InfoPlist.strings */,
+				9CB355A41505212200BAB050 /* main.m */,
+				9CB355A61505212200BAB050 /* Poc-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9CC4B7251507858900FD4EA4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9CC4B727150785DB00FD4EA4 /* State.h */,
+				9CC4B728150785E400FD4EA4 /* State.m */,
+				9C45900D150540BC00E891FF /* CustomPlacemark.m */,
+				9C45900C150540BC00E891FF /* CustomPlacemark.h */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9CB355931505212200BAB050 /* Poc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9CB355B51505212200BAB050 /* Build configuration list for PBXNativeTarget "Poc" */;
+			buildPhases = (
+				9CB355901505212200BAB050 /* Sources */,
+				9CB355911505212200BAB050 /* Frameworks */,
+				9CB355921505212200BAB050 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Poc;
+			productName = Poc;
+			productReference = 9CB355941505212200BAB050 /* Poc.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9CB3558B1505212200BAB050 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 9CB3558E1505212200BAB050 /* Build configuration list for PBXProject "Poc" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9CB355891505212200BAB050;
+			productRefGroup = 9CB355951505212200BAB050 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9CB355931505212200BAB050 /* Poc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9CB355921505212200BAB050 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CB355A31505212200BAB050 /* InfoPlist.strings in Resources */,
+				9CB355AC1505212200BAB050 /* MainStoryboard.storyboard in Resources */,
+				9CB355BE1505225400BAB050 /* background.png in Resources */,
+				9C459017150542C100E891FF /* Forward_Geocoding-Info.plist in Resources */,
+				9CA747BF1505E0B800177DD2 /* dashboard.jpg in Resources */,
+				9CBA4466150DCB8900023342 /* popups_bg.png in Resources */,
+				9C91932C151213840025D052 /* VINCompareAccessoryButton.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9CB355901505212200BAB050 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CB355A51505212200BAB050 /* main.m in Sources */,
+				9CB355A91505212200BAB050 /* AppDelegate.m in Sources */,
+				9CB355AF1505212200BAB050 /* MainViewController.m in Sources */,
+				9CB355CD1505254200BAB050 /* MapViewController.m in Sources */,
+				9C459007150540B000E891FF /* BSAddressComponent.m in Sources */,
+				9C459008150540B000E891FF /* BSForwardGeocoder.m in Sources */,
+				9C459009150540B000E891FF /* BSGoogleV3KmlParser.m in Sources */,
+				9C45900A150540B000E891FF /* BSKmlResult.m in Sources */,
+				9C459012150540BC00E891FF /* CustomPlacemark.m in Sources */,
+				9C459014150540BC00E891FF /* Forward_GeocodingViewController.m in Sources */,
+				9CB0FE391505D41E00BD6A84 /* DashBoardController.m in Sources */,
+				9CA747BD1505DCF500177DD2 /* MapCategoryViewController.m in Sources */,
+				9CC4B729150785E400FD4EA4 /* State.m in Sources */,
+				9C92CB5C150BE12500093CCE /* Poc.xcdatamodel in Sources */,
+				9C9B21A1150DBE610027560E /* StateDetailPopOverController.m in Sources */,
+				9C8C7138150F716900DB8005 /* MKMapView+ZoomLevel.m in Sources */,
+				9C9193241511E2330025D052 /* StateViewContrller.m in Sources */,
+				9CC66DB81516246C00B7B0DE /* CountyDetailViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9CB355A11505212200BAB050 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9CB355A21505212200BAB050 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9CB355AA1505212200BAB050 /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9CB355AB1505212200BAB050 /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9CB355B31505212200BAB050 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		9CB355B41505212200BAB050 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9CB355B61505212200BAB050 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Poc/Poc-Prefix.pch";
+				INFOPLIST_FILE = "Poc/Poc-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9CB355B71505212200BAB050 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Poc/Poc-Prefix.pch";
+				INFOPLIST_FILE = "Poc/Poc-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9CB3558E1505212200BAB050 /* Build configuration list for PBXProject "Poc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CB355B31505212200BAB050 /* Debug */,
+				9CB355B41505212200BAB050 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9CB355B51505212200BAB050 /* Build configuration list for PBXNativeTarget "Poc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CB355B61505212200BAB050 /* Debug */,
+				9CB355B71505212200BAB050 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9CB3558B1505212200BAB050 /* Project object */;
+}
