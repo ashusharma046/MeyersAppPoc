@@ -15,9 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-        UIImage *backgroundImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"vinSearchResultBarBackgroundImage" ofType:@"png"]];
-        //backgroundImageView.image = backgroundImage;
-        self.backgroundColor=[UIColor whiteColor];
+               self.backgroundColor=[UIColor whiteColor];
         [self addSubview:backgroundImageView];
         
          self.layer.cornerRadius = 12;

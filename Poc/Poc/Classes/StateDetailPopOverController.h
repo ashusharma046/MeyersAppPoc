@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 @protocol StateDetailPopOverControllerDelegate
--(void) removePopOver;
+//-(void) removePopOver;
 -(void) drawDetailedMap;
 @end
 #import <UIKit/UIKit.h>

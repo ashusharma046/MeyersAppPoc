@@ -18,7 +18,7 @@
 #import "StateDemographicViewController.h"
 #import "StateHousingViewController.h"
 #import "StateEconomicsViewController.h"
-@interface StateViewContrller : UIViewController<MKOverlay,MKMapViewDelegate,UISearchBarDelegate,BSForwardGeocoderDelegate,StateDetailPopOverControllerDelegate,UIGestureRecognizerDelegate,StateDemographicViewControllerDelegate>{
+@interface StateViewContrller : UIViewController<MKOverlay,MKMapViewDelegate,UISearchBarDelegate,BSForwardGeocoderDelegate,StateDetailPopOverControllerDelegate,UIGestureRecognizerDelegate,StateDemographicViewControllerDelegate,StateHousingViewControllerDelegate,StateEconomicsViewControllerDelegate>{
     int k;
     State *state;
     MKCoordinateRegion region;
@@ -35,6 +35,7 @@
     StateHousingViewController *stateHousingViewController;
     StateEconomicsViewController *stateEconomicsViewController;
     UIColor *overLayBackGround;
+    UISegmentedControl *segmentedControl;
 }
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
@@ -54,4 +55,5 @@
 -(IBAction)showHousing:(id)sender;
 -(void) drawPopOver:(CGPoint)pt andCoord:(CLLocationCoordinate2D) coordinate;
 -(UIView *)stateHosingDataForStateName:(NSString *)str withView:(MKPolygonView *)av;
+- (void) pickOne:(id)sender;
 @end

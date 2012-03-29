@@ -61,7 +61,7 @@
     CLLocationCoordinate2D centerCoordinate;
     centerCoordinate.latitude=GEORGIA_TECH_LATITUDE;
     centerCoordinate.longitude=GEORGIA_TECH_LONGITUDE;
-    self.mapView.zoomEnabled=NO;
+    self.mapView.zoomEnabled=YES;
     
     //set us map
   
@@ -94,6 +94,7 @@
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain
                                                                      target:self action:@selector(settingDetails:)];      
     self.navigationItem.rightBarButtonItem = anotherButton;
+  
    
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -159,7 +160,31 @@
 -(void)mapTapped:(UITapGestureRecognizer *)recognizer{
   
     CLLocationCoordinate2D coordinate = [self.mapView convertPoint:[recognizer locationInView:self.mapView] toCoordinateFromView:self.mapView];
-    currentState=[self stateForGeocodeForLatitude:coordinate.latitude andLongitude:coordinate.longitude];
+    //currentState=[self stateForGeocodeForLatitude:coordinate.latitude andLongitude:coordinate.longitude];
+    MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
+    for (id overlay in self.mapView.overlays) 
+    {
+        if ([overlay isKindOfClass:[MKPolygon class]])
+        {
+            MKPolygon *poly = (MKPolygon*) overlay;
+            id view = [self.mapView viewForOverlay:poly];
+            if ([view isKindOfClass:[MKPolygonView class]])
+            {
+                MKPolygonView *polyView = (MKPolygonView*) view;
+                CGPoint polygonViewPoint = [polyView pointForMapPoint:mapPoint];
+                BOOL mapCoordinateIsInPolygon = CGPathContainsPoint(polyView.path, NULL, polygonViewPoint, NO);   
+                if (mapCoordinateIsInPolygon) {
+                    
+                    NSLog(@"find it  %@",poly.title);
+                    currentState=poly.title;
+                } else {
+                    NSLog(@"did notfind it"); 
+                }
+            }
+        }
+    }
+    
+
     self.stateDetailPopOverController=[[StateDetailPopOverController alloc] initWithStateName:currentState withRegion:[self regionForStateName:currentState]];  
         
     self.stateDetailPopOverController.delegate=self;
@@ -179,6 +204,9 @@
     region1 = [self regionForStateName:currentState];
     [self.mapView setRegion:region1 animated:YES];  
     [self.mapView setCenterCoordinate:region1.center];
+        
+            
+        
    }
   
 }
@@ -265,7 +293,7 @@
      MKPolygon *poly2 = [MKPolygon polygonWithCoordinates:points2 count:[st.geoArray count]];
      poly2.title=st.name;    
      [self.mapView addOverlay:poly2];
-       
+           
     }
 
 }
@@ -399,7 +427,7 @@
      {
      int j=0;
      MKPolygonView *aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
-     UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
+     UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dothis)];
      tap.delegate=self;
      tap.numberOfTapsRequired=1;
      [aView addGestureRecognizer:tap];
@@ -435,7 +463,10 @@
     return nil;
 
 }
+-(void)dothis{
 
+    NSLog(@"tapped");
+}
 /*
  *-----------------------------------------------------------------------------
  *	Method for View of overlays for New Home Sales Settings
@@ -563,6 +594,7 @@
 -(MKPolygonView *) affordabilityView :(id <MKOverlay>)overlay{
     
     MKPolygonView *aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
+    aView.userInteractionEnabled=YES;
     UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
     tap.delegate=self;
     tap.numberOfTapsRequired=1;
@@ -627,8 +659,8 @@
     UILabel *lb1=[[UILabel alloc] initWithFrame:CGRectMake(30, 5, 150, 45)];
     lb1.text=@"New Home Sales";
     
-    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 150, 45)];
-    lb2.text=@"Less then 20000 $";
+    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 140, 45)];
+    lb2.text=@"Less then 20000$";
     UILabel *lb22=[[UILabel alloc] initWithFrame:CGRectMake(160, 60, 30, 20)];
     lb22.backgroundColor=[UIColor redColor];
     [bView addSubview:lb22];
@@ -642,7 +674,7 @@
     
     
     UILabel *lb4=[[UILabel alloc] initWithFrame:CGRectMake(500, 45, 170, 45)];
-    lb4.text=@"Greater then 80000 ";
+    lb4.text=@"Greater then 80000 $";
     
     UILabel *lb44=[[UILabel alloc] initWithFrame:CGRectMake(670, 60, 30, 20)];
     lb44.backgroundColor=[UIColor greenColor];
@@ -681,8 +713,8 @@
     UILabel *lb1=[[UILabel alloc] initWithFrame:CGRectMake(30, 5, 150, 45)];
     lb1.text=@"New Home Price";
     
-    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 150, 45)];
-    lb2.text=@"Less then 20000 $";
+    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 140, 45)];
+    lb2.text=@"Less then 20000$";
     
     UILabel *lb22=[[UILabel alloc] initWithFrame:CGRectMake(160, 60, 30, 20)];
     lb22.backgroundColor=[UIColor redColor];
@@ -697,7 +729,7 @@
     
     
     UILabel *lb4=[[UILabel alloc] initWithFrame:CGRectMake(500, 45, 170, 45)];
-    lb4.text=@"Greater then 80000 ";
+    lb4.text=@"Greater then 80000 $";
     
     UILabel *lb44=[[UILabel alloc] initWithFrame:CGRectMake(670, 60, 30, 20)];
     lb44.backgroundColor=[UIColor grayColor];
@@ -737,8 +769,8 @@
     UILabel *lb1=[[UILabel alloc] initWithFrame:CGRectMake(30, 5, 250, 45)];
     lb1.text=@"Appartment Occupency";
     
-    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 150, 45)];
-    lb2.text=@"Less then 20000 ";
+    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 140, 45)];
+    lb2.text=@"Less then 20000";
     UILabel *lb22=[[UILabel alloc] initWithFrame:CGRectMake(160, 60, 30, 20)];
     lb22.backgroundColor=[UIColor redColor];
     [bView addSubview:lb22];
@@ -792,7 +824,7 @@
     lb1.text=@"Affordability";
     
     UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 140, 45)];
-    lb2.text=@"Less then 20000 $";
+    lb2.text=@"Less then 20000$";
     UILabel *lb22=[[UILabel alloc] initWithFrame:CGRectMake(160, 60, 30, 20)];
     lb22.backgroundColor=[UIColor redColor];
     [bView addSubview:lb22];
@@ -1139,6 +1171,7 @@
 -(void)closeSetting{
     [self dismissModalViewControllerAnimated:YES];
 }
+
 
 /*
 *-----------------------------------------------------------------------------

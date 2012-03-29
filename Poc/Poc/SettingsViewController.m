@@ -42,7 +42,10 @@
         checkmarkRow=appDelegate.settingStatus-1;
     }
     
+    
+   
 }
+
 /*
 
 - (void)viewDidUnload

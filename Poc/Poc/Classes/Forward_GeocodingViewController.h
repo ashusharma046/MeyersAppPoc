@@ -83,6 +83,7 @@
 - (void)setBottemViewForNewHomePrice;
 - (void)setBottemViewForaffordabilityView;
 - (void)setBottemViewForapartmentoccupencyView;
+-(void)dothis;
 @end
 
 

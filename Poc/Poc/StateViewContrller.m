@@ -168,10 +168,33 @@
     firstlaunch=1;
     currentCounty=[[NSString alloc] init];
     self.mapView.zoomEnabled=NO;
+    
+    NSArray *itemArray = [NSArray arrayWithObjects: @"Housing", @"Economics", @"Demographics", nil];
+	segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
+	segmentedControl.frame = CGRectMake(0, 917, 420, 44);
+	segmentedControl.segmentedControlStyle = UISegmentedControlStylePlain;
+	[segmentedControl addTarget:self
+	                     action:@selector(pickOne:)
+	           forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:segmentedControl];
 
 }
 
+- (void) pickOne:(id)sender{
+    UISegmentedControl *segmentedControl1= (UISegmentedControl *)sender;
+    NSString *text = [segmentedControl1 titleForSegmentAtIndex: [segmentedControl selectedSegmentIndex]];
+    if ([text isEqualToString:@"Housing"]) {
+        [self showHousing:self];
+    }
+    else if ([text isEqualToString:@"Economics"]) {
+        [self showHousing:self];
+    }
+    else if ([text isEqualToString:@"Demographics"]) {
+        [self showHousing:self];
+    }
 
+
+} 
 
 
 
@@ -236,6 +259,7 @@
     stateDemographicViewController.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:stateDemographicViewController animated:NO];
     stateDemographicViewController.view.superview.frame= CGRectMake(252,200, 332, 507);
+    //[sender setBackgroundImage:<#(UIImage *)#> forState:<#(UIControlState)#>]
 }
 -(IBAction)showEconomicsics:(id)sender{
     stateEconomicsViewController=[[StateEconomicsViewController alloc] init];
@@ -575,6 +599,8 @@
 
 
 -(void)doneButtonPressed{
+    NSLog(@"done presed");
+    segmentedControl.selectedSegmentIndex=-1;
 	[self.modalViewController dismissModalViewControllerAnimated:YES];
 }
 

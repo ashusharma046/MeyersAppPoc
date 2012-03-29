@@ -17,4 +17,5 @@
      int checkmarkRow;
 }
 @property (nonatomic,retain)id<SettingsViewControllerControllerDelegate> delegate;
+
 @end
