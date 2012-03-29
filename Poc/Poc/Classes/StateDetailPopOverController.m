@@ -7,6 +7,9 @@
 //
 
 #import "StateDetailPopOverController.h"
+#import "AppDelegate.h"
+#import <CoreData/CoreData.h>
+#import "State_housing_data.h"
 
 @implementation StateDetailPopOverController
 @synthesize  delegate;
@@ -62,14 +65,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-     NSLog(@"regiion is %f  **********%f",region.center.latitude,region.center.longitude);
     self.title=@"hello";
-    UIColor *backgroundImage = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"popups_bg.png"]];
-    self.view.backgroundColor = backgroundImage;
-    self.contentSizeForViewInPopover = CGSizeMake(290.0, 120.0);
+    UIColor *backgroundImageColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"popups_bg.png"]];
+    self.view.backgroundColor = backgroundImageColor;
+    self.contentSizeForViewInPopover = CGSizeMake(290.0, 100.0);
     UILabel *lb=[[UILabel alloc] initWithFrame:CGRectMake(10, 15,230, 55)];
     lb.text=[NSString stringWithFormat:@"Location  Name is %@",self.stateName];
-  //  NSLog(@"lb text is %@",self.stateName);
     lb.backgroundColor=[UIColor clearColor];
     [self.view addSubview:lb];
     UIButton *detailBtn=[UIButton buttonWithType:UIButtonTypeCustom] ;
@@ -79,8 +80,25 @@
     detailBtn.frame=CGRectMake(230, 15,40, 55);
     detailBtn.titleLabel.text=@"Detail";
     [detailBtn addTarget:self action:@selector(drawDetailMap) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:detailBtn];
     
+        [self.view addSubview:detailBtn];
+    
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"State_housing_data" inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDesc];
+    NSPredicate *myPred=[NSPredicate predicateWithFormat:@"stateName==%@",self.stateName];
+    request.predicate=myPred;  
+    NSError *error;
+    NSArray *recordsArray = [context executeFetchRequest:request error:&error]; 
+    NSLog(@"record array count is %d",[recordsArray count]);
+  
+    for (State_housing_data *rec in recordsArray) {
+        NSLog(@"matched string is %@and price is %@ and home sales is %@  ",rec.stateName,rec.new_Home_Price,rec.new_Home_Sales);
+    }
+   
 }
 
 -(void)drawDetailMap{

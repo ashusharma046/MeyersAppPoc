@@ -4,13 +4,21 @@
 #import "State.h"
 #import "MKMapView+ZoomLevel.h"
 #import "StateViewContrller.h"
+#import "AppDelegate.h"
+#import <CoreData/CoreData.h>
+#import "BottemView.h"
 
+#import "State_housing_data.h"
 #define GEORGIA_TECH_LATITUDE 37.46
 #define GEORGIA_TECH_LONGITUDE 122.25
 #define ZOOM_LEVEL 14
 #define MERCATOR_OFFSET 268435456
 #define MERCATOR_RADIUS 85445659.44705395
 
+
+#define kViewHeight 748
+#define kViewWidth 1024
+#define kResultBarHeight 135
 
 @implementation Forward_GeocodingViewController
 @synthesize forwardGeocoder = _forwardGeocoder;
@@ -21,15 +29,15 @@
 @synthesize currentState;
 @synthesize region1;
 @synthesize stateViewContrller;
-
+@synthesize managedObjectContext;
 
 
 
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-
-	//self.mapView.showsUserLocation = YES;
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	NSLog(@"app delgate setting status is %d",appDelegate.settingStatus);
 	self.mapView.delegate = self;
 	self.searchBar.delegate = self;
      
@@ -55,22 +63,87 @@
     centerCoordinate.longitude=GEORGIA_TECH_LONGITUDE;
     self.mapView.zoomEnabled=NO;
     
-    
+    //set us map
   
     CLLocationCoordinate2D cord;
     cord.latitude=37.423617;
     cord.longitude= -122.220154;
     CLLocationDistance centerToBorderMeters = 4000000;
-   CLLocationCoordinate2D centerCoord = CLLocationCoordinate2DMake(cord.latitude,cord.longitude);
+    CLLocationCoordinate2D centerCoord = CLLocationCoordinate2DMake(cord.latitude,cord.longitude);
     MKCoordinateRegion rgn = MKCoordinateRegionMakeWithDistance 
     (centerCoord, 
      centerToBorderMeters ,   
      centerToBorderMeters );  
     
     [self.mapView setRegion:rgn animated:YES];
-
+    
+    NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"Poc" ofType:@"sqlite"];
+    if (!defaultStorePath) {
+    NSLog(@"file exist at defalut store");
+    }
+    else{
+        NSLog(@"no datat  filled");
+    }
+    self.mapView.zoomEnabled=NO;
+    if (!appDelegate.isDatatableFilled) {
+       [self fillDataTable];  
+        NSLog(@"filling data");
+        appDelegate.isDatatableFilled=YES;
+    }
+    
+    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain
+                                                                     target:self action:@selector(settingDetails:)];      
+    self.navigationItem.rightBarButtonItem = anotherButton;
+   
 }
-//}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if (appDelegate.settingStatus==1) {
+        [self reDrawMapView];
+        [self setBottemViewForNewHomeSales];    
+    
+    }
+    else if(appDelegate.settingStatus==2){
+        [self reDrawMapView];
+        [self setBottemViewForNewHomePrice]; 
+    
+    }
+    else if(appDelegate.settingStatus==3){
+        [self reDrawMapView];
+        [self setBottemViewForaffordabilityView]; 
+    }
+    else if(appDelegate.settingStatus==4){
+        [self reDrawMapView];
+        [self setBottemViewForapartmentoccupencyView]; 
+    }
+    
+}
+
+
+-(void) removeBootemView:(UIButton *)sender{
+    [bView removeFromSuperview];
+    [sender removeFromSuperview];
+}
+-(void) reDrawMapView{
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"State_housing_data" inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDesc];
+    
+   
+    NSError *error;
+    staterecordsArray = [context executeFetchRequest:request error:&error]; 
+//    for (State_housing_data *rec in staterecordsArray) {
+//    }
+    
+    [self.mapView removeOverlays:[self.mapView overlays]];
+    [self drawOverLay]; 
+}
 
 //*****************************************************************************************************************//
 
@@ -86,19 +159,17 @@
 -(void)mapTapped:(UITapGestureRecognizer *)recognizer{
   
     CLLocationCoordinate2D coordinate = [self.mapView convertPoint:[recognizer locationInView:self.mapView] toCoordinateFromView:self.mapView];
-    NSLog(@"lat and long are %F  ******%f",coordinate.latitude,coordinate.longitude);
     currentState=[self stateForGeocodeForLatitude:coordinate.latitude andLongitude:coordinate.longitude];
-    CGPoint pt=[recognizer locationInView:self.view];
     self.stateDetailPopOverController=[[StateDetailPopOverController alloc] initWithStateName:currentState withRegion:[self regionForStateName:currentState]];  
-    
-    //self.stateDetailPopOverController=[[StateDetailPopOverController alloc] initWithStateName:currentState];    
+        
     self.stateDetailPopOverController.delegate=self;
+    //NSLog(@"current color is %@",[self colorForStateName:currentState]);
+    
+    if (currentState) {
     self.popOver=[[UIPopoverController alloc] initWithContentViewController:self.stateDetailPopOverController];
-   
-       
-    CGRect rect=CGRectMake(pt.x,pt.y, 290, 120);
+    CGRect rect=CGRectMake(200,300, 290, 100);
     [self.popOver presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-     NSLog(@"p3");
+    
     timer = [NSTimer scheduledTimerWithTimeInterval: 2.0
                                             target: self
                                            selector:@selector(onTick)
@@ -108,20 +179,23 @@
     region1 = [self regionForStateName:currentState];
     [self.mapView setRegion:region1 animated:YES];  
     [self.mapView setCenterCoordinate:region1.center];
+   }
   
 }
+
+
 - (void)zoomToFitOverlays {
-   // [self.mapView zoomToFitOverlaysAnimated:YES];
+   
 }
 
 
 -(void)onTick{
    
-    //[self.popOver dismissPopoverAnimated:YES];
+    [self.popOver dismissPopoverAnimated:YES];
     [timer invalidate];
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
+     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 
@@ -131,7 +205,41 @@
 
 }
 
-//*****************************************************************************************************************//
+
+-(void)fillDataTable{
+
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (self.managedObjectContext == nil) { 
+        self.managedObjectContext = [appDelegate managedObjectContext]; 
+	}
+    
+    
+   
+    int i;
+    for (i=0;i<[stateArray count] ; i++) {
+    State *st=[stateArray objectAtIndex:i];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:@"State_housing_data" 
+                               
+                                                            inManagedObjectContext:context];
+    
+    [object setValue:st.name forKey:@"stateName"];
+    [object setValue:[NSNumber numberWithInt:(i*1400)] forKey:@"new_Home_Sales"];
+    [object setValue:[NSNumber numberWithInt:(i*1000)] forKey:@"new_Home_Price"];
+    [object setValue:[NSNumber numberWithInt:(i*12000)] forKey:@"multifamily_Rents"];  
+    [object setValue:[NSNumber numberWithInt:(i*900)] forKey:@"affordability"]; 
+    [object setValue:[NSNumber numberWithInt:(i*1200)] forKey:@"apartment_occupency"];     
+     NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"Failed to save - error: %@", [error localizedDescription]);
+    }
+
+    }
+
+}
+
+ //*****************************************************************************************************************//
 
    // Draw OverLay                                                                                           
    //   1) Create a Polygon of all geomatric Points of a state                    
@@ -155,7 +263,8 @@
      
      }
      MKPolygon *poly2 = [MKPolygon polygonWithCoordinates:points2 count:[st.geoArray count]];
-    [self.mapView addOverlay:poly2];
+     poly2.title=st.name;    
+     [self.mapView addOverlay:poly2];
        
     }
 
@@ -247,7 +356,7 @@
 }
 
 
-/*
+ /*
  *-----------------------------------------------------------------------------
  *	MKOverlay Delegate methods
  *
@@ -256,43 +365,477 @@
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay
 {
-    
-    if ([overlay isKindOfClass:[MKPolygon class]])
-    {
-        int j=0;
-        MKPolygonView*    aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
-        if (k<[stateArray count]) {
-            State *st=[stateArray objectAtIndex:k];
-           
-        aView.fillColor = [self colorFromHexString:st.color];
-        aView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
-        aView.lineWidth = 3; 
-        aView.alpha=.3;
-        k=k+1;
-        }  
-        else{
-            
-            if(j==0){aView.fillColor = [UIColor redColor];}
-            else if(j==1){
-            aView.fillColor = [UIColor yellowColor];
-            }
-            else{
-            aView.fillColor = [UIColor purpleColor];
-            }
-            
-            aView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
-            aView.lineWidth = 3; 
-            aView.alpha=.3;
-            j=j+1;
-        }
-        return aView;
-          
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    if (appDelegate.settingStatus==0) {
+        return [self defaultView:overlay];
     }
-    
+    else if (appDelegate.settingStatus==1) {
+         NSLog(@"newHomeSalesView");
+        return [self newHomeSalesView:overlay];
+    }
+    else if(appDelegate.settingStatus==2){
+         NSLog(@"newHomePriceView");
+      return [self newHomePriceView:overlay];
+    }
+    else if(appDelegate.settingStatus==3){
+        NSLog(@"affordabilityView");
+      return [self affordabilityView:overlay];   
+    }
+    else if(appDelegate.settingStatus==4){
+         NSLog(@"apartmentoccupencyView");
+        return [self apartmentoccupencyView:overlay];   
+    }
     return nil;
 }
 
+/*
+ *-----------------------------------------------------------------------------
+ *	Method for default View of overlays 
+ *-----------------------------------------------------------------------------
+ */
+-(MKPolygonView *) defaultView :(id <MKOverlay>)overlay{ 
+     if ([overlay isKindOfClass:[MKPolygon class]])
+     {
+     int j=0;
+     MKPolygonView *aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
+     UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
+     tap.delegate=self;
+     tap.numberOfTapsRequired=1;
+     [aView addGestureRecognizer:tap];
+     aView.userInteractionEnabled=YES;
+         
+     if (k<[stateArray count]) {
+     State *st=[stateArray objectAtIndex:k];
+     
+     aView.fillColor = [self colorFromHexString:st.color];
+     aView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+     aView.lineWidth = 3; 
+     aView.alpha=.3;
+     k=k+1;
+     }  
+     else{
+     
+     if(j==0){aView.fillColor = [UIColor redColor];}
+     else if(j==1){
+     aView.fillColor = [UIColor yellowColor];
+     }
+     else{
+     aView.fillColor = [UIColor purpleColor];
+     }
+     
+     aView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+     aView.lineWidth = 3; 
+     aView.alpha=.3;
+     j=j+1;
+     }
+     return aView;
+     
+     }
+    return nil;
 
+}
+
+/*
+ *-----------------------------------------------------------------------------
+ *	Method for View of overlays for New Home Sales Settings
+ *-----------------------------------------------------------------------------
+ */
+-(MKPolygonView *) newHomeSalesView :(id <MKOverlay>)overlay{
+    
+    MKPolygonView *aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
+    tap.delegate=self;
+    tap.numberOfTapsRequired=1;
+    [aView addGestureRecognizer:tap];
+    MKPolygon *pk=(MKPolygon *)overlay;
+    NSString *statname=pk.title;
+     aView.alpha=.3;
+   
+    int n;
+    for(n=0;n<[staterecordsArray count];n++)  {
+        if([statname isEqualToString:[[staterecordsArray objectAtIndex:n] valueForKey:@"stateName"]] ){
+            
+            
+            int newhomeSale =[[[staterecordsArray objectAtIndex:n] valueForKey:@"new_Home_Sales"] intValue];
+            if (newhomeSale>0 && newhomeSale<=20000) {
+                aView.fillColor=[UIColor redColor];
+            }
+            else if(newhomeSale>20000 && newhomeSale<=80000){
+                aView.fillColor=[UIColor magentaColor];
+            }
+            else if(newhomeSale>80000 && newhomeSale<100000){
+                aView.fillColor=[UIColor greenColor];;
+            }
+            
+        }
+       
+    } 
+    return aView;
+}
+
+/*
+ *-----------------------------------------------------------------------------
+ *	Method for View of overlays for New Home Price Settings
+ *-----------------------------------------------------------------------------
+ */
+
+-(MKPolygonView *) newHomePriceView :(id <MKOverlay>)overlay{
+    MKPolygonView *aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
+    tap.delegate=self;
+    tap.numberOfTapsRequired=1;
+    [aView addGestureRecognizer:tap];
+    MKPolygon *pk=(MKPolygon *)overlay;
+    NSString *statname=pk.title;
+     aView.alpha=.3;
+    
+    int n;
+    for(n=0;n<[staterecordsArray count];n++)  {
+        if([statname isEqualToString:[[staterecordsArray objectAtIndex:n] valueForKey:@"stateName"]] ){
+            
+            
+            int newhomeSale =[[[staterecordsArray objectAtIndex:n] valueForKey:@"new_Home_Price"] intValue];
+            if (newhomeSale>=0 && newhomeSale<=20000) {
+                aView.fillColor=[UIColor redColor];
+            }
+            else if(newhomeSale>20000 && newhomeSale<=80000){
+                aView.fillColor=[UIColor blueColor];
+            }
+            else if(newhomeSale>80000){
+                aView.fillColor=[UIColor grayColor];
+            }
+           
+        }
+       
+    } 
+    
+    
+     return aView;;
+
+}
+
+/*
+ *-----------------------------------------------------------------------------
+ *	Method for View of overlays for Apartment Occupancy  Settings
+ *-----------------------------------------------------------------------------
+ */
+
+-(MKPolygonView *) apartmentoccupencyView :(id <MKOverlay>)overlay{
+    
+    MKPolygonView *aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
+    tap.delegate=self;
+    tap.numberOfTapsRequired=1;
+    [aView addGestureRecognizer:tap];
+    MKPolygon *pk=(MKPolygon *)overlay;
+    NSString *statname=pk.title;
+    aView.alpha=.3;
+    int n;
+    for(n=0;n<[staterecordsArray count];n++)  {
+      //  NSLog(@"iteration is %d",n);
+        if([statname isEqualToString:[[staterecordsArray objectAtIndex:n] valueForKey:@"stateName"]] ){
+            
+            
+            int newhomeSale =[[[staterecordsArray objectAtIndex:n] valueForKey:@"apartment_occupency"] intValue];
+        
+            if (newhomeSale>=0 && newhomeSale<=20000) {
+                aView.fillColor=[UIColor redColor];
+            }
+            else if(newhomeSale>20000 && newhomeSale<=80000){
+                aView.fillColor=[UIColor blueColor];
+            }
+            else if(newhomeSale>80000 ){
+                aView.fillColor=[UIColor purpleColor];
+            }
+        }
+       
+    } 
+    return aView;
+
+}
+
+/*
+ *-----------------------------------------------------------------------------
+ *	Method for View of overlays for Affordablity  Settings
+ *-----------------------------------------------------------------------------
+ */
+-(MKPolygonView *) affordabilityView :(id <MKOverlay>)overlay{
+    
+    MKPolygonView *aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
+    tap.delegate=self;
+    tap.numberOfTapsRequired=1;
+    [aView addGestureRecognizer:tap];
+    MKPolygon *pk=(MKPolygon *)overlay;
+    NSString *statname=pk.title;
+     aView.alpha=.3;
+    
+    int n;
+    for(n=0;n<[staterecordsArray count];n++)  {
+        if([statname isEqualToString:[[staterecordsArray objectAtIndex:n] valueForKey:@"stateName"]] ){
+            
+            
+            int newhomeSale =[[[staterecordsArray objectAtIndex:n] valueForKey:@"affordability"] intValue];
+            if (newhomeSale>0 && newhomeSale<=20000) {
+                aView.fillColor=[UIColor redColor];
+            }
+            else if(newhomeSale>20000 && newhomeSale<=80000){
+                aView.fillColor=[UIColor blueColor];
+            }
+            else if(newhomeSale>80000 ){
+                aView.fillColor=[UIColor purpleColor];
+            }
+        }
+       
+    } 
+     return aView;;
+    
+}
+
+
+
+
+ /*
+ *-----------------------------------------------------------------------------
+ *	Methods for Creating bottem view  For Different Settings
+ *
+ *-----------------------------------------------------------------------------
+ */
+
+
+
+
+- (void)setBottemViewForNewHomeSales{
+    bView=[[BottemView alloc] initWithFrame:CGRectMake(0, 870+50, 980, 90)];
+    [self.view addSubview:bView];
+       
+    crossButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    crossButton.frame=CGRectMake(720, 867+50, 60, 40);
+    [crossButton addTarget:self action:@selector(removeBootemView:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [crossButton setImage:[UIImage imageNamed:@"cross.png"] forState:UIControlStateNormal];
+    
+    [self.view addSubview:crossButton];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:2.5];
+    
+    crossButton.frame=CGRectMake(720, 867, 60, 40);
+    bView.frame=CGRectMake(40, 870, 980, 90);
+    [UIView commitAnimations];
+
+    UILabel *lb1=[[UILabel alloc] initWithFrame:CGRectMake(30, 5, 150, 45)];
+    lb1.text=@"New Home Sales";
+    
+    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 150, 45)];
+    lb2.text=@"Less then 20000 $";
+    UILabel *lb22=[[UILabel alloc] initWithFrame:CGRectMake(160, 60, 30, 20)];
+    lb22.backgroundColor=[UIColor redColor];
+    [bView addSubview:lb22];
+    
+    UILabel *lb3=[[UILabel alloc] initWithFrame:CGRectMake(200, 45, 230, 45)];
+    lb3.text=@"Between 20000 and 80000 $";
+    UILabel *lb33=[[UILabel alloc] initWithFrame:CGRectMake(430, 60, 30, 20)];
+    lb33.backgroundColor=[UIColor magentaColor];;
+    [bView addSubview:lb33];
+    
+    
+    
+    UILabel *lb4=[[UILabel alloc] initWithFrame:CGRectMake(500, 45, 170, 45)];
+    lb4.text=@"Greater then 80000 ";
+    
+    UILabel *lb44=[[UILabel alloc] initWithFrame:CGRectMake(670, 60, 30, 20)];
+    lb44.backgroundColor=[UIColor greenColor];
+    [bView addSubview:lb44];
+    
+    lb22.alpha=.3;
+    lb33.alpha=.3;
+    lb44.alpha=.3;
+    [bView addSubview:lb1];
+    [bView addSubview:lb2];
+    [bView addSubview:lb3];
+    [bView addSubview:lb4];
+    
+}
+
+
+- (void)setBottemViewForNewHomePrice{
+    bView=[[BottemView alloc] initWithFrame:CGRectMake(40, 870+50, 980, 90)];
+    [self.view addSubview:bView];
+   
+    crossButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    crossButton.frame=CGRectMake(720, 867+50, 60, 40);
+    [crossButton addTarget:self action:@selector(removeBootemView:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [crossButton setImage:[UIImage imageNamed:@"cross.png"] forState:UIControlStateNormal];
+    
+    [self.view addSubview:crossButton];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:2.5];
+    
+    crossButton.frame=CGRectMake(720, 867, 60, 40);
+    bView.frame=CGRectMake(40, 870, 980, 90);
+    [UIView commitAnimations];
+    
+    
+    UILabel *lb1=[[UILabel alloc] initWithFrame:CGRectMake(30, 5, 150, 45)];
+    lb1.text=@"New Home Price";
+    
+    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 150, 45)];
+    lb2.text=@"Less then 20000 $";
+    
+    UILabel *lb22=[[UILabel alloc] initWithFrame:CGRectMake(160, 60, 30, 20)];
+    lb22.backgroundColor=[UIColor redColor];
+    [bView addSubview:lb22];
+    
+    UILabel *lb3=[[UILabel alloc] initWithFrame:CGRectMake(200, 45, 230, 45)];
+    lb3.text=@"Between 20000 and 80000$";
+    UILabel *lb33=[[UILabel alloc] initWithFrame:CGRectMake(430, 60, 30, 20)];
+    lb33.backgroundColor=[UIColor blueColor];
+    [bView addSubview:lb33];
+    
+    
+    
+    UILabel *lb4=[[UILabel alloc] initWithFrame:CGRectMake(500, 45, 170, 45)];
+    lb4.text=@"Greater then 80000 ";
+    
+    UILabel *lb44=[[UILabel alloc] initWithFrame:CGRectMake(670, 60, 30, 20)];
+    lb44.backgroundColor=[UIColor grayColor];
+    [bView addSubview:lb44];
+    
+    [bView addSubview:lb1];
+    [bView addSubview:lb2];
+    [bView addSubview:lb3];
+    [bView addSubview:lb4];
+    lb22.alpha=.3;
+    lb33.alpha=.3;
+    lb44.alpha=.3;
+}
+
+- (void)setBottemViewForapartmentoccupencyView{
+    
+    
+    
+    bView=[[BottemView alloc] initWithFrame:CGRectMake(40, 870+50, 980, 90)];
+    [self.view addSubview:bView];
+    
+    crossButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    crossButton.frame=CGRectMake(720, 867+50, 60, 40);
+    [crossButton addTarget:self action:@selector(removeBootemView:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [crossButton setImage:[UIImage imageNamed:@"cross.png"] forState:UIControlStateNormal];
+    
+    [self.view addSubview:crossButton];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:2.5];
+    
+    crossButton.frame=CGRectMake(720, 867, 60, 40);
+    bView.frame=CGRectMake(40, 870, 980, 90);
+    [UIView commitAnimations];
+    
+    
+    UILabel *lb1=[[UILabel alloc] initWithFrame:CGRectMake(30, 5, 250, 45)];
+    lb1.text=@"Appartment Occupency";
+    
+    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 150, 45)];
+    lb2.text=@"Less then 20000 ";
+    UILabel *lb22=[[UILabel alloc] initWithFrame:CGRectMake(160, 60, 30, 20)];
+    lb22.backgroundColor=[UIColor redColor];
+    [bView addSubview:lb22];
+    
+    UILabel *lb3=[[UILabel alloc] initWithFrame:CGRectMake(200, 45, 230, 45)];
+    lb3.text=@"Between 20000 and 80000";
+    UILabel *lb33=[[UILabel alloc] initWithFrame:CGRectMake(430, 60, 30, 20)];
+    lb33.backgroundColor=[UIColor blueColor];
+    [bView addSubview:lb33];
+    
+    
+    
+    UILabel *lb4=[[UILabel alloc] initWithFrame:CGRectMake(500, 45, 170, 45)];
+    lb4.text=@"Greater then 80000 ";
+    
+    UILabel *lb44=[[UILabel alloc] initWithFrame:CGRectMake(670, 60, 30, 20)];
+    lb44.backgroundColor=[UIColor purpleColor];
+    [bView addSubview:lb44];
+    
+    [bView addSubview:lb1];
+    [bView addSubview:lb2];
+    [bView addSubview:lb3];
+    [bView addSubview:lb4];
+    lb22.alpha=.3;
+    lb33.alpha=.3;
+    lb44.alpha=.3;
+    
+}
+- (void)setBottemViewForaffordabilityView{
+    
+    bView=[[BottemView alloc] initWithFrame:CGRectMake(40, 870+50, 980, 90)];
+    [self.view addSubview:bView];
+   
+    
+    crossButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    crossButton.frame=CGRectMake(720, 867+50, 60, 40);
+    [crossButton addTarget:self action:@selector(removeBootemView:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [crossButton setImage:[UIImage imageNamed:@"cross.png"] forState:UIControlStateNormal];
+    
+    [self.view addSubview:crossButton];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:2.5];
+    
+    crossButton.frame=CGRectMake(720, 867, 60, 40);
+    bView.frame=CGRectMake(40, 870, 980, 90);
+    [UIView commitAnimations];
+    
+    
+    UILabel *lb1=[[UILabel alloc] initWithFrame:CGRectMake(30, 5, 150, 45)];
+    lb1.text=@"Affordability";
+    
+    UILabel *lb2=[[UILabel alloc] initWithFrame:CGRectMake(30, 45, 140, 45)];
+    lb2.text=@"Less then 20000 $";
+    UILabel *lb22=[[UILabel alloc] initWithFrame:CGRectMake(160, 60, 30, 20)];
+    lb22.backgroundColor=[UIColor redColor];
+    [bView addSubview:lb22];
+    
+    UILabel *lb3=[[UILabel alloc] initWithFrame:CGRectMake(200, 45, 230, 45)];
+    lb3.text=@"Between 20000 and 80000$";
+    UILabel *lb33=[[UILabel alloc] initWithFrame:CGRectMake(430, 60, 30, 20)];
+    lb33.backgroundColor=[UIColor blueColor];
+    [bView addSubview:lb33];
+    
+    
+    
+    UILabel *lb4=[[UILabel alloc] initWithFrame:CGRectMake(500, 45, 170, 45)];
+    lb4.text=@"Greater then 80000 ";
+    
+    UILabel *lb44=[[UILabel alloc] initWithFrame:CGRectMake(670, 60, 30, 20)];
+    lb44.backgroundColor=[UIColor purpleColor];
+    [bView addSubview:lb44];
+    
+    [bView addSubview:lb1];
+    [bView addSubview:lb2];
+    [bView addSubview:lb3];
+    [bView addSubview:lb4];
+    
+    lb22.alpha=.3;
+    lb33.alpha=.3;
+    lb44.alpha=.3;
+    
+}
+
+
+-(NSString *)colorForStateName:(NSString *)stname{
+
+    for( State *st in stateArray){
+        if ([st.name isEqualToString:stname]) {
+            NSLog(@"clor is st color %@",st.color);
+            return st.color;
+        }
+    
+    }
+    return nil;
+
+}
 
 #pragma mark - BSForwardGeocoderDelegate methods
 
@@ -555,7 +1098,18 @@
 }
 
 
+-(IBAction)settingDetails:(id)sender{
+   
+    [bView removeFromSuperview];
+    [crossButton removeFromSuperview];
+    settingViewController=[[SettingsViewController alloc] init];
+    
+    settingViewController.delegate=self;
+    [self.navigationController pushViewController:settingViewController animated:YES];
+    settingViewController.view.superview.frame= CGRectMake(252,200, 320, 380);
 
+
+}
 #pragma mark - Memory management
 
 - (void)didReceiveMemoryWarning 
@@ -582,7 +1136,9 @@
 }
 
 
-
+-(void)closeSetting{
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 /*
 *-----------------------------------------------------------------------------
@@ -632,17 +1188,20 @@
 }
 
 -(void)drawDetailedMap{
-    NSLog(@"hello");
-    
+    [bView removeFromSuperview];
+    [crossButton removeFromSuperview];
     [self.popOver dismissPopoverAnimated:YES];
     stateViewContrller=[self.storyboard instantiateViewControllerWithIdentifier:@"StateViewContrller"];
     stateViewContrller.region=region1;
     stateViewContrller.mianScreenNavigation=YES;
+    stateViewContrller.overLayBackGround=[self colorFromHexString:[self colorForStateName:currentState]];
     stateViewContrller.geocodeArray=[self geoArrayForstateName:currentState];
     stateViewContrller.currentStateName=currentState;
     [self.navigationController pushViewController:stateViewContrller animated:YES];
     
 
 }
-
+- (NSString *)applicationDocumentsDirectory {
+	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+}
 @end

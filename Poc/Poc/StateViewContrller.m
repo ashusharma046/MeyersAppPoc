@@ -5,6 +5,10 @@
 #import "CountyDetailViewController.h"
 #import "StateViewContrller.h"
 #import "MKMapView+ZoomLevel.h"
+#import "StateDemographicViewController.h"
+#import "AppDelegate.h"
+#import "State_housing_data.h"
+#import <CoreData/CoreData.h>
 #define MERCATOR_OFFSET 268435456
 #define MERCATOR_RADIUS 85445659.44705395
 @implementation StateViewContrller
@@ -18,6 +22,7 @@
 @synthesize popOver=_popOver;
 @synthesize stateDetailPopOverController=_stateDetailPopOverController;
 @synthesize currentStateName;
+@synthesize overLayBackGround;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -130,20 +135,20 @@
         
 
         
-   
-    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
-    tap.delegate=self;
-    tap.numberOfTapsRequired=1;
-    [self.mapView addGestureRecognizer:tap];
-        
+           
     
     
     
-    k=0;
+        k=0;
         mianScreenNavigation=YES;
     
     }
     
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
+    tap.delegate=self;
+    tap.numberOfTapsRequired=1;
+    [self.mapView addGestureRecognizer:tap];
+
     
     int j;
     if (![currentStateName isEqualToString:@"Colorado"]) {
@@ -172,7 +177,7 @@
 
 
 -(void)mapTapped:(UITapGestureRecognizer *)recognizer{
-    
+    NSLog(@"map tapped");
     CLLocationCoordinate2D coordinate = [self.mapView convertPoint:[recognizer locationInView:self.mapView] toCoordinateFromView:self.mapView];
     float latitude=coordinate.latitude;
     float longitude=coordinate.longitude;
@@ -205,8 +210,9 @@
             [self drawPopOver:[recognizer locationInView:self.view] andCoord:coordinate];
         }
     }
+        
 
-
+    //[self stateHosingDataForStateName:currentStateName withView:a];
        
 }
 -(void) drawPopOver:(CGPoint)pt andCoord:(CLLocationCoordinate2D) coordinate{
@@ -222,19 +228,57 @@
     
 
 }
+-(IBAction)showDemogrphics:(id)sender{
+    stateDemographicViewController=[[StateDemographicViewController alloc] init];
+    stateDemographicViewController.currentState=currentStateName;
+    stateDemographicViewController.delegate=self;
+    stateDemographicViewController.modalPresentationStyle=UIModalPresentationFormSheet;
+    stateDemographicViewController.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:stateDemographicViewController animated:NO];
+    stateDemographicViewController.view.superview.frame= CGRectMake(252,200, 332, 507);
+}
+-(IBAction)showEconomicsics:(id)sender{
+    stateEconomicsViewController=[[StateEconomicsViewController alloc] init];
+    stateEconomicsViewController.currentState=currentStateName;
+    stateEconomicsViewController.delegate=self;
+    stateEconomicsViewController.modalPresentationStyle=UIModalPresentationFormSheet;
+    stateEconomicsViewController.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:stateEconomicsViewController animated:YES];
+    stateEconomicsViewController.view.superview.frame= CGRectMake(252,200, 332, 507);
+}
+-(IBAction)showHousing:(id)sender{
+    stateHousingViewController=[[StateHousingViewController alloc] init];
+     stateHousingViewController.currentState=currentStateName;
+     stateHousingViewController.delegate=self;
+     stateHousingViewController.modalPresentationStyle=UIModalPresentationFormSheet;
+     stateHousingViewController.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
+     [self presentModalViewController: stateHousingViewController animated:YES];
+     stateHousingViewController.view.superview.frame= CGRectMake(252,200, 332, 507);
 
+  
+    
+//    self.popOver=[[UIPopoverController alloc] initWithContentViewController:stateHousingViewController];
+//    CGRect rect=CGRectMake(252,200, 330, 38);
+//    [self.popOver presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+
+}
 - (void)viewDidUnload
 {
     [super viewDidUnload];
 }
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:(BOOL)animated];     
+}
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay
 {
-  
     
-    if ([overlay isKindOfClass:[MKPolygon class]])
-    {
+    MKPolygonView*    aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
+    if ([currentStateName isEqualToString:@"Colorado"]) {
         
-        MKPolygonView*    aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
+      if ([overlay isKindOfClass:[MKPolygon class]])
+      {
+        
+        
         if (k==0) {
         aView.fillColor = [UIColor redColor];
             NSLog(@"red");    
@@ -259,8 +303,19 @@
         return aView;
       
         
+      }
     }
-    
+    else{
+        NSLog(@"different color");
+        aView.fillColor = overLayBackGround;
+        aView.alpha=.2;
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        if (appDelegate.settingStatus > 0) {
+            [self stateHosingDataForStateName:currentStateName withView:aView];
+        }
+        return aView;
+    }
     return nil;
 }
 
@@ -423,6 +478,79 @@
 	return nil;
 }
 
+-(UIView *)stateHosingDataForStateName:(NSString *)str withView:(MKPolygonView *)av{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"State_housing_data" inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDesc];
+    
+    
+    NSError *error;
+   
+    NSPredicate *pred= [NSPredicate predicateWithFormat:@"stateName = %@",currentStateName]; 
+    [request setPredicate:pred];
+     NSArray *staterecordsArray = [context executeFetchRequest:request error:&error]; 
+    State_housing_data *stData=[staterecordsArray objectAtIndex:0];
+    
+    if (appDelegate.settingStatus==1) {
+         int newhomeSale= [[stData valueForKey:@"new_Home_Sales"] intValue];  
+         if (newhomeSale>0 && newhomeSale<=20000) {
+            av.fillColor=[UIColor redColor];
+         }
+         else if(newhomeSale>20000 && newhomeSale<=80000){
+            av.fillColor=[UIColor magentaColor];
+         }
+         else if(newhomeSale>80000 && newhomeSale<100000){
+            av.fillColor=[UIColor greenColor];
+         }
+
+        
+    }
+    else if(appDelegate.settingStatus==2){
+        int new_Home_Price=[[stData valueForKey:@"new_Home_Price"] intValue];
+        if (new_Home_Price>=0 && new_Home_Price<=20000) {
+            av.fillColor=[UIColor redColor];
+        }
+        else if(new_Home_Price>20000 && new_Home_Price<=80000){
+            av.fillColor=[UIColor blueColor];
+        }
+        else if(new_Home_Price>80000){
+            av.fillColor=[UIColor grayColor];
+        }
+
+                
+    }
+    else if(appDelegate.settingStatus==3){
+       int affordability=[[stData valueForKey:@"affordability"] intValue];
+        if (affordability>=0 && affordability<=20000) {
+            av.fillColor=[UIColor redColor];
+        }
+        else if(affordability>20000 && affordability<=80000){
+            av.fillColor=[UIColor blueColor];
+        }
+        else if(affordability>80000 ){
+            av.fillColor=[UIColor purpleColor];
+        }
+
+    }
+    else if(appDelegate.settingStatus==4){
+        int apartment_occupency=[[stData valueForKey:@"apartment_occupency"] intValue];
+        if (apartment_occupency>0 && apartment_occupency<=20000) {
+            av.fillColor=[UIColor redColor];
+        }
+        else if(apartment_occupency>20000 && apartment_occupency<=80000){
+            av.fillColor=[UIColor blueColor];
+        }
+        else if(apartment_occupency>80000 ){
+            av.fillColor=[UIColor purpleColor];
+        }
+
+    }
+    
+    return av;
+    
+   }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
 					  ofObject:(id)object
@@ -442,6 +570,12 @@
 			NSLog(@"annotation selected: %f %f", ((MKAnnotationView*) object).annotation.coordinate.latitude, ((MKAnnotationView*) object).annotation.coordinate.longitude);
 		}
 	}
+}
+
+
+
+-(void)doneButtonPressed{
+	[self.modalViewController dismissModalViewControllerAnimated:YES];
 }
 
 -(void)drawDetailedMap{

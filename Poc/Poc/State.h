@@ -11,7 +11,6 @@
 @interface State : NSObject {
     NSString *name;
     NSString *color;
-    //Array of geocodes of states
     NSMutableArray *geoArray;
      
 }

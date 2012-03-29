@@ -15,7 +15,10 @@
 #import "State.h"
 #import "StateDetailPopOverController.h"
 #import "CountyDetailViewController.h"
-@interface StateViewContrller : UIViewController<MKOverlay,MKMapViewDelegate,UISearchBarDelegate,BSForwardGeocoderDelegate,StateDetailPopOverControllerDelegate,UIGestureRecognizerDelegate>{
+#import "StateDemographicViewController.h"
+#import "StateHousingViewController.h"
+#import "StateEconomicsViewController.h"
+@interface StateViewContrller : UIViewController<MKOverlay,MKMapViewDelegate,UISearchBarDelegate,BSForwardGeocoderDelegate,StateDetailPopOverControllerDelegate,UIGestureRecognizerDelegate,StateDemographicViewControllerDelegate>{
     int k;
     State *state;
     MKCoordinateRegion region;
@@ -24,10 +27,14 @@
     CountyDetailViewController * countyDetailViewController;
     int firstlaunch;
     
-     StateDetailPopOverController * _stateDetailPopOverController;
-     UIPopoverController * _popOver;
+    StateDetailPopOverController * _stateDetailPopOverController;
+    UIPopoverController * _popOver;
     NSString *currentCounty;
     NSString *currentStateName;
+    StateDemographicViewController *stateDemographicViewController;
+    StateHousingViewController *stateHousingViewController;
+    StateEconomicsViewController *stateEconomicsViewController;
+    UIColor *overLayBackGround;
 }
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
@@ -36,11 +43,15 @@
 @property (nonatomic, assign) MKCoordinateRegion region;
 @property (nonatomic, retain) NSArray *geocodeArray;
 @property (nonatomic, assign) BOOL mianScreenNavigation;
- @property (nonatomic,retain) NSString *currentStateName;
+@property (nonatomic,retain)  NSString *currentStateName;
 @property (strong,nonatomic)  CountyDetailViewController * countyDetailViewController;
 @property (nonatomic, retain) StateDetailPopOverController * stateDetailPopOverController;
 @property (nonatomic, retain) UIPopoverController *popOver;
+@property (nonatomic, retain) UIColor *overLayBackGround;
 -(NSString *)countyForGeocodeForLatitude : (float)latitude andLongitude:(float)longitude;
-
+-(IBAction)showDemogrphics:(id)sender;
+-(IBAction)showEconomicsics:(id)sender;
+-(IBAction)showHousing:(id)sender;
 -(void) drawPopOver:(CGPoint)pt andCoord:(CLLocationCoordinate2D) coordinate;
+-(UIView *)stateHosingDataForStateName:(NSString *)str withView:(MKPolygonView *)av;
 @end

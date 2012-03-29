@@ -9,6 +9,8 @@
 #import "MainViewController.h"
 #import "MapViewController.h"
 #import "DashBoardController.h"
+#import "AppDelegate.h"
+#import <CoreData/CoreData.h>
 @implementation MainViewController
 @synthesize controller;
 @synthesize userName,passWord;
@@ -28,6 +30,8 @@
 {
     [super viewDidLoad];
 	self.title=@"Log In";
+    
+
 }
 
 - (void)viewDidUnload

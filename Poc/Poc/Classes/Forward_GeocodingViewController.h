@@ -17,8 +17,11 @@
 #import "State.h"
 #import "StateDetailPopOverController.h"
 #import "StateViewContrller.h"
+#import "SettingsViewController.h"
+#import "BottemView.h"
 @class StateDetailPopOverController;
-@interface Forward_GeocodingViewController : UIViewController <MKMapViewDelegate, UISearchBarDelegate, BSForwardGeocoderDelegate,MKOverlay,NSXMLParserDelegate,UIGestureRecognizerDelegate,StateDetailPopOverControllerDelegate,UIPopoverControllerDelegate>{
+@class SettingsViewController;
+@interface Forward_GeocodingViewController : UIViewController <MKMapViewDelegate, UISearchBarDelegate, BSForwardGeocoderDelegate,MKOverlay,NSXMLParserDelegate,UIGestureRecognizerDelegate,StateDetailPopOverControllerDelegate,UIPopoverControllerDelegate,SettingsViewControllerControllerDelegate>{
 
 
     NSXMLParser *parser;
@@ -36,6 +39,12 @@
     
     MKCoordinateRegion region1;
     StateViewContrller *stateViewContrller;
+    SettingsViewController *settingViewController;
+    NSArray *staterecordsArray ;
+    
+    //bottem description view
+    BottemView *bView;
+    UIButton *crossButton;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
@@ -46,16 +55,34 @@
 @property (nonatomic, retain)  NSString *currentState;
 @property (nonatomic, assign)  MKCoordinateRegion region1;
 @property (strong,nonatomic) StateViewContrller *stateViewContrller;
-
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 -(void) drawOverLay;
-
+-(void) reDrawMapView;
+-(void) removeBootemView:(UIButton *)sender;
 - (UIColor *) colorFromHexString:(NSString *)hexString ;
 -(NSString *)stateForGeocodeForLatitude : (float)latitude andLongitude:(float)longitude;
+-(NSString *)colorForStateName:(NSString *)colorname;
 -(float)minLongitudeForState:(State *)st;
 -(float)maxLongitudeForState:(State *)st;
 
 -(MKCoordinateRegion ) regionForStateName:(NSString *)stateName;
 -(NSArray *)geoArrayForstateName:(NSString *) stName;
+-(void)fillDataTable;
+-(IBAction)settingDetails:(id)sender;
+- (NSString *)applicationDocumentsDirectory;
+//overLay settting methods
+-(MKPolygonView *) defaultView :(id <MKOverlay>)overlay;
+-(MKPolygonView *) newHomeSalesView :(id <MKOverlay>)overlay;
+-(MKPolygonView *) newHomePriceView :(id <MKOverlay>)overlay;
+-(MKPolygonView *) apartmentoccupencyView :(id <MKOverlay>)overlay;
+-(MKPolygonView *) affordabilityView :(id <MKOverlay>)overlay;
+
+
+//bottem decription view methods
+- (void)setBottemViewForNewHomeSales;
+- (void)setBottemViewForNewHomePrice;
+- (void)setBottemViewForaffordabilityView;
+- (void)setBottemViewForapartmentoccupencyView;
 @end
 
 

@@ -55,23 +55,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-	return YES;
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-/*
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    NSLog(@"prepareForSeague  called");
-    
-    if ([[segue identifier] isEqualToString:@"StateSeague"] )
-    {          
-        stateViewContrller1=[[StateViewContrller alloc] init];
-        stateViewContrller1 =[segue destinationViewController];
-        stateViewContrller1.mianScreenNavigation=YES;
-        
-    }
-    
-}
-
-*/
 
 @end

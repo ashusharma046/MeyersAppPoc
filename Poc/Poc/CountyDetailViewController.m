@@ -136,7 +136,7 @@
     MKPolygon *polynew = [MKPolygon polygonWithCoordinates:pointsDrawn count:[geocodeArray count]];
     [self.mapView addOverlay:polynew];
 
-   self.mapView.zoomEnabled=NO;
+    self.mapView.zoomEnabled=NO;
 
 }
 
