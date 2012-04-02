@@ -97,17 +97,17 @@
     NSArray *recordsArray = [context executeFetchRequest:request error:&error]; 
     NSLog(@"record array count is %d",[recordsArray count]);
     
-    for (State_housing_data *rec in recordsArray) {
-        NSLog(@"matched string is %@and price is %@ and home sales is %@  ",rec.stateName,rec.new_Home_Price,rec.new_Home_Sales);
-    }
+//    for (State_housing_data *rec in recordsArray) {
+//        NSLog(@"matched string is %@and price is %@ and home sales is %@  ",rec.stateName,rec.new_Home_Price,rec.new_Home_Sales);
+//    }
     if ([recordsArray count]>0) {
         
-    
-    demographicLb.text=[NSString stringWithFormat:@"New Home Prices $%@",[[recordsArray objectAtIndex:0] valueForKey:@"new_Home_Price"]];     
-    demographicLb1.text=[NSString stringWithFormat:@"New Home Sales %@",[[recordsArray objectAtIndex:0] valueForKey:@"new_Home_Sales"]]; 
-    demographicLb2.text=[NSString stringWithFormat:@"Resale Home Sales %@",[[recordsArray objectAtIndex:0] valueForKey:@"resale_Home_Sales"]]; 
-    
-    demographicLb3.text=[NSString stringWithFormat:@"Affordability %@",[[recordsArray objectAtIndex:0] valueForKey:@"affordability"]]; 
+        NSLog(@"economic view controller");
+        demographicLb.text=[NSString stringWithString:@"E/P Ratio  .56"];
+                        
+        demographicLb1.text=[NSString stringWithString:@"Jobs Growth  5000"];
+        demographicLb2.text=[NSString stringWithString:@"Permits  10000 "];    
+//    demographicLb3.text=[NSString stringWithFormat:@"Affordability %@",[[recordsArray objectAtIndex:0] valueForKey:@"affordability"]]; 
     }    
     
     

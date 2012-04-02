@@ -76,7 +76,7 @@
     demographicLb1.backgroundColor=[UIColor clearColor];
     [self.view addSubview:demographicLb1];
     
-    UILabel *demographicLb2=[[UILabel alloc] initWithFrame:CGRectMake(10, 160, 220, 55)];
+    UILabel *demographicLb2=[[UILabel alloc] initWithFrame:CGRectMake(10, 160, 280, 55)];
     demographicLb2.backgroundColor=[UIColor clearColor];
     [self.view addSubview:demographicLb2];
     
@@ -96,19 +96,13 @@
     request.predicate=myPred;  
     NSError *error;
     NSArray *recordsArray = [context executeFetchRequest:request error:&error]; 
-    NSLog(@"record array count is %d",[recordsArray count]);
-    
-    for (State_housing_data *rec in recordsArray) {
-        NSLog(@"matched string is %@and price is %@ and home sales is %@  ",rec.stateName,rec.new_Home_Price,rec.new_Home_Sales);
-    }
     if ([recordsArray count]>0) {
         
     
-    demographicLb.text=[NSString stringWithFormat:@"New Home Prices $%@",[[recordsArray objectAtIndex:0] valueForKey:@"new_Home_Price"]];     
-    demographicLb1.text=[NSString stringWithFormat:@"New Home Sales %@",[[recordsArray objectAtIndex:0] valueForKey:@"new_Home_Sales"]]; 
-    demographicLb2.text=[NSString stringWithFormat:@"Resale Home Sales %@",[[recordsArray objectAtIndex:0] valueForKey:@"resale_Home_Sales"]]; 
-    
-    demographicLb3.text=[NSString stringWithFormat:@"Affordability %@",[[recordsArray objectAtIndex:0] valueForKey:@"affordability"]]; 
+        demographicLb.text=[NSString stringWithFormat:@" Population  37,691,912"];
+        demographicLb1.text=[NSString stringWithFormat:@" Per capita income $27,344"];
+        demographicLb2.text=[NSString stringWithFormat:@"Persons under 18 years 9,691,912"];    
+//        demographicLb3.text=[NSString stringWithFormat:@"Affordability %@",[[recordsArray objectAtIndex:0] valueForKey:@"affordability"]]; 
     }
 
 }

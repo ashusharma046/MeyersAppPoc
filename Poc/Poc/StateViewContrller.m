@@ -190,10 +190,10 @@
         [self showHousing:self];
     }
     else if ([text isEqualToString:@"Economics"]) {
-        [self showHousing:self];
+        [self showEconomicsics:self];
     }
     else if ([text isEqualToString:@"Demographics"]) {
-        [self showHousing:self];
+        [self showDemogrphics:self];
     }
 
 
@@ -262,7 +262,7 @@
     stateDemographicViewController.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:stateDemographicViewController animated:NO];
     stateDemographicViewController.view.superview.frame= CGRectMake(252,200, 332, 507);
-    //[sender setBackgroundImage:<#(UIImage *)#> forState:<#(UIControlState)#>]
+   
 }
 -(IBAction)showEconomicsics:(id)sender{
     stateEconomicsViewController=[[StateEconomicsViewController alloc] init];
