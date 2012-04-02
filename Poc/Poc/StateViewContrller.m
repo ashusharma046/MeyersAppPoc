@@ -67,7 +67,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  
+    
+    if (!currentStateName) {
+        currentStateName=@"Colorado";
+    }
     self.mapView.delegate = self;
 	self.searchBar.delegate = self;
     CLLocationDistance centerToBorderMeters = 400000;
