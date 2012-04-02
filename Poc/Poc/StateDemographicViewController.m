@@ -101,7 +101,7 @@
     
         demographicLb.text=[NSString stringWithFormat:@" Population  37,691,912"];
         demographicLb1.text=[NSString stringWithFormat:@" Per capita income $27,344"];
-        demographicLb2.text=[NSString stringWithFormat:@"Persons under 18 years 9,691,912"];    
+        demographicLb2.text=[NSString stringWithFormat:@" Persons under 18 years 9,691,912"];    
 //        demographicLb3.text=[NSString stringWithFormat:@"Affordability %@",[[recordsArray objectAtIndex:0] valueForKey:@"affordability"]]; 
     }
 
