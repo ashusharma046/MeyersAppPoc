@@ -160,7 +160,7 @@
 -(void)mapTapped:(UITapGestureRecognizer *)recognizer{
   
     CLLocationCoordinate2D coordinate = [self.mapView convertPoint:[recognizer locationInView:self.mapView] toCoordinateFromView:self.mapView];
-    //currentState=[self stateForGeocodeForLatitude:coordinate.latitude andLongitude:coordinate.longitude];
+    
     MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
     for (id overlay in self.mapView.overlays) 
     {

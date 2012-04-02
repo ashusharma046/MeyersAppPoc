@@ -102,7 +102,7 @@
     if ([recordsArray count]>0) {
         
    
-    demographicLb.text=[NSString stringWithFormat:@"New Home Prices %@",[[recordsArray objectAtIndex:0] valueForKey:@"new_Home_Price"]];     
+    demographicLb.text=[NSString stringWithFormat:@"New Home Prices $%@",[[recordsArray objectAtIndex:0] valueForKey:@"new_Home_Price"]];     
     demographicLb1.text=[NSString stringWithFormat:@"New Home Sales %@",[[recordsArray objectAtIndex:0] valueForKey:@"new_Home_Sales"]]; 
     demographicLb2.text=[NSString stringWithFormat:@"Resale Home Sales %@",[[recordsArray objectAtIndex:0] valueForKey:@"resale_Home_Sales"]]; 
     
