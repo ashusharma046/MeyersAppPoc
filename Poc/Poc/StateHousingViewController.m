@@ -57,10 +57,10 @@
     item.rightBarButtonItem = rightButton;
     [navigationBar setItems:[NSArray arrayWithObject:item]];
     
+   
     
     
-    
-    self.view.backgroundColor = backgroundImageColor;
+    self.view.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:nil];
     [self.navigationItem setLeftBarButtonItem:leftBarButton];
     
@@ -93,15 +93,10 @@
     request.predicate=myPred;  
     NSError *error;
     NSArray *recordsArray = [context executeFetchRequest:request error:&error]; 
-    NSLog(@"record array count is %d",[recordsArray count]);
+    NSLog(@"record array count is %d nd current stae %@",[recordsArray count],currentState);
     
-    for (State_housing_data *rec in recordsArray) {
-        NSLog(@"matched string is %@and price is %@ and home sales is %@  ",rec.stateName,rec.new_Home_Price,rec.new_Home_Sales);
-    }
-    
+       
     if ([recordsArray count]>0) {
-        
-   
     demographicLb.text=[NSString stringWithFormat:@"New Home Prices $%@",[[recordsArray objectAtIndex:0] valueForKey:@"new_Home_Price"]];     
     demographicLb1.text=[NSString stringWithFormat:@"New Home Sales %@",[[recordsArray objectAtIndex:0] valueForKey:@"new_Home_Sales"]]; 
     demographicLb2.text=[NSString stringWithFormat:@"Resale Home Sales %@",[[recordsArray objectAtIndex:0] valueForKey:@"resale_Home_Sales"]]; 

@@ -52,7 +52,7 @@
 
 	navigationBar.barStyle = UIBarStyleBlackOpaque;
 	[navigationBar setBackgroundColor:[UIColor whiteColor]];
-	navigationBar.frame = CGRectMake(0, 0, 330, 50);
+	navigationBar.frame = CGRectMake(0, 0, 332, 50);
 	[self.view addSubview:navigationBar];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonClick)];
     UINavigationItem *item = [[UINavigationItem alloc] init];
@@ -63,7 +63,7 @@
     self.contentSizeForViewInPopover = CGSizeMake(330.0, 320.0);
     
 
-    self.view.backgroundColor = backgroundImageColor;
+    self.view.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:nil];
     [self.navigationItem setLeftBarButtonItem:leftBarButton];
    
@@ -102,7 +102,6 @@
         demographicLb.text=[NSString stringWithFormat:@" Population  37,691,912"];
         demographicLb1.text=[NSString stringWithFormat:@" Per capita income $27,344"];
         demographicLb2.text=[NSString stringWithFormat:@" Persons under 18 years 9,691,912"];    
-//        demographicLb3.text=[NSString stringWithFormat:@"Affordability %@",[[recordsArray objectAtIndex:0] valueForKey:@"affordability"]]; 
     }
 
 }

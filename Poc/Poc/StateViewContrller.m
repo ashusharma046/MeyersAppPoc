@@ -71,6 +71,7 @@
     if (!currentStateName) {
         currentStateName=@"Colorado";
     }
+    cloradoColorchaneIndex=0;
     self.mapView.delegate = self;
 	self.searchBar.delegate = self;
     CLLocationDistance centerToBorderMeters = 400000;
@@ -81,7 +82,65 @@
      centerToBorderMeters );  
    
     [self.mapView setRegion:rgn animated:YES];
-   
+    [self drawOverLay];
+       
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
+    tap.delegate=self;
+    tap.numberOfTapsRequired=1;
+    [self.mapView addGestureRecognizer:tap];
+
+    
+    [self drawStateOverLay];
+    firstlaunch=1;
+    currentCounty=[[NSString alloc] init];
+    self.mapView.zoomEnabled=NO;
+    
+    NSArray *itemArray = [NSArray arrayWithObjects: @"Housing", @"Economics", @"Demographics", nil];
+	segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
+	segmentedControl.frame = CGRectMake(0, 917, 420, 44);
+	segmentedControl.segmentedControlStyle = UISegmentedControlStylePlain;
+	[segmentedControl addTarget:self
+	                     action:@selector(pickOne:)
+	           forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:segmentedControl];
+
+}
+
+- (void) pickOne:(id)sender{
+    UISegmentedControl *segmentedControl1= (UISegmentedControl *)sender;
+    NSString *text = [segmentedControl1 titleForSegmentAtIndex: [segmentedControl selectedSegmentIndex]];
+    if ([text isEqualToString:@"Housing"]) {
+        [self showHousing:self];
+    }
+    else if ([text isEqualToString:@"Economics"]) {
+        [self showEconomicsics:self];
+    }
+    else if ([text isEqualToString:@"Demographics"]) {
+        [self showDemogrphics:self];
+    }
+
+
+} 
+-(void)drawStateOverLay{
+    int j;
+    if (![currentStateName isEqualToString:@"Colorado"]) {
+        CLLocationCoordinate2D  pointsDrawn[[geocodeArray count]];
+        
+        for (j=0; j<[geocodeArray count]; j++) {
+            NSDictionary *dict=[geocodeArray objectAtIndex:j];
+            pointsDrawn[j]=CLLocationCoordinate2DMake([[dict valueForKey:@"lat"] floatValue],[[dict valueForKey:@"lng"] floatValue]);;
+            
+        }
+        MKPolygon *polynew = [MKPolygon polygonWithCoordinates:pointsDrawn count:[geocodeArray count]];
+        
+        
+        
+        [self.mapView addOverlay:polynew];
+    }    
+
+}
+-(void)drawOverLay{
+     CLLocationDistance centerToBorderMeters = 400000;
     if ((geocodeArray==nil || [geocodeArray count]==0) || [currentStateName isEqualToString:@"Colorado"]) {
         CLLocationCoordinate2D centerCoord = CLLocationCoordinate2DMake(38,-104);    
         MKCoordinateRegion rgn = MKCoordinateRegionMakeWithDistance 
@@ -128,78 +187,19 @@
         points5[0] = CLLocationCoordinate2DMake(39.300299, -105.183105);
         points5[1] = CLLocationCoordinate2DMake(39.095963, -108.940430); 
         points5[3] = CLLocationCoordinate2DMake(36.985003, -105.688477);
-
+        
         points5[2] = CLLocationCoordinate2DMake(36.985003,-109.039307);
         
         
         MKPolygon* poly5 = [MKPolygon polygonWithCoordinates:points5 count:4];
         [self.mapView addOverlay:poly5];
         
-        
-
-        
-           
-    
-    
-    
         k=0;
         mianScreenNavigation=YES;
-    
-    }
-    
-    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapTapped :)];
-    tap.delegate=self;
-    tap.numberOfTapsRequired=1;
-    [self.mapView addGestureRecognizer:tap];
-
-    
-    int j;
-    if (![currentStateName isEqualToString:@"Colorado"]) {
-    CLLocationCoordinate2D  pointsDrawn[[geocodeArray count]];
-   
-    for (j=0; j<[geocodeArray count]; j++) {
-        NSDictionary *dict=[geocodeArray objectAtIndex:j];
-        pointsDrawn[j]=CLLocationCoordinate2DMake([[dict valueForKey:@"lat"] floatValue],[[dict valueForKey:@"lng"] floatValue]);;
         
     }
-    MKPolygon *polynew = [MKPolygon polygonWithCoordinates:pointsDrawn count:[geocodeArray count]];
-    
-        
-    
-    [self.mapView addOverlay:polynew];
-    }    
-    firstlaunch=1;
-    currentCounty=[[NSString alloc] init];
-    self.mapView.zoomEnabled=NO;
-    
-    NSArray *itemArray = [NSArray arrayWithObjects: @"Housing", @"Economics", @"Demographics", nil];
-	segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-	segmentedControl.frame = CGRectMake(0, 917, 420, 44);
-	segmentedControl.segmentedControlStyle = UISegmentedControlStylePlain;
-	[segmentedControl addTarget:self
-	                     action:@selector(pickOne:)
-	           forControlEvents:UIControlEventValueChanged];
-	[self.view addSubview:segmentedControl];
 
 }
-
-- (void) pickOne:(id)sender{
-    UISegmentedControl *segmentedControl1= (UISegmentedControl *)sender;
-    NSString *text = [segmentedControl1 titleForSegmentAtIndex: [segmentedControl selectedSegmentIndex]];
-    if ([text isEqualToString:@"Housing"]) {
-        [self showHousing:self];
-    }
-    else if ([text isEqualToString:@"Economics"]) {
-        [self showEconomicsics:self];
-    }
-    else if ([text isEqualToString:@"Demographics"]) {
-        [self showDemogrphics:self];
-    }
-
-
-} 
-
-
 
 
 -(void)mapTapped:(UITapGestureRecognizer *)recognizer{
@@ -261,8 +261,11 @@
     stateDemographicViewController.modalPresentationStyle=UIModalPresentationFormSheet;
     stateDemographicViewController.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:stateDemographicViewController animated:NO];
-    stateDemographicViewController.view.superview.frame= CGRectMake(252,200, 332, 507);
-   
+    stateDemographicViewController.view.superview.frame= CGRectMake(453,10, 332, 307);
+    cloradoColorchaneIndex=3;
+    [self.mapView removeOverlays:[self.mapView overlays]];
+    [self drawOverLay]; 
+    [self drawStateOverLay];
 }
 -(IBAction)showEconomicsics:(id)sender{
     stateEconomicsViewController=[[StateEconomicsViewController alloc] init];
@@ -270,8 +273,12 @@
     stateEconomicsViewController.delegate=self;
     stateEconomicsViewController.modalPresentationStyle=UIModalPresentationFormSheet;
     stateEconomicsViewController.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
-    [self presentModalViewController:stateEconomicsViewController animated:YES];
-    stateEconomicsViewController.view.superview.frame= CGRectMake(252,200, 332, 507);
+   [self presentModalViewController:stateEconomicsViewController animated:YES];
+     stateEconomicsViewController.view.superview.frame= CGRectMake(453,10, 332, 307);
+    cloradoColorchaneIndex=1;
+    [self.mapView removeOverlays:[self.mapView overlays]];
+    [self drawOverLay]; 
+    [self drawStateOverLay];
 }
 -(IBAction)showHousing:(id)sender{
     stateHousingViewController=[[StateHousingViewController alloc] init];
@@ -280,14 +287,11 @@
      stateHousingViewController.modalPresentationStyle=UIModalPresentationFormSheet;
      stateHousingViewController.modalTransitionStyle=UIModalTransitionStyleCrossDissolve;
      [self presentModalViewController: stateHousingViewController animated:YES];
-     stateHousingViewController.view.superview.frame= CGRectMake(252,200, 332, 507);
-
-  
-    
-//    self.popOver=[[UIPopoverController alloc] initWithContentViewController:stateHousingViewController];
-//    CGRect rect=CGRectMake(252,200, 330, 38);
-//    [self.popOver presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
-
+     stateHousingViewController.view.superview.frame= CGRectMake(453,10, 332, 307);
+     cloradoColorchaneIndex=0;
+     [self.mapView removeOverlays:[self.mapView overlays]];
+     [self drawOverLay]; 
+    [self drawStateOverLay];
 }
 - (void)viewDidUnload
 {
@@ -300,12 +304,12 @@
 {
     
     MKPolygonView*    aView = [[MKPolygonView alloc] initWithPolygon:(MKPolygon*)overlay] ;
-    if ([currentStateName isEqualToString:@"Colorado"]) {
-        
-      if ([overlay isKindOfClass:[MKPolygon class]])
+    if ([currentStateName isEqualToString:@"Colorado"] ) {
+      
+     if (cloradoColorchaneIndex==0) {
+         
+     if ([overlay isKindOfClass:[MKPolygon class]])
       {
-        
-        
         if (k==0) {
         aView.fillColor = [UIColor redColor];
             NSLog(@"red");    
@@ -331,10 +335,123 @@
       
         
       }
+    } 
+     else if(cloradoColorchaneIndex==1){
+         if ([overlay isKindOfClass:[MKPolygon class]])
+         {
+             if (k==0) {
+                 aView.fillColor = [UIColor blueColor]; //[UIColor redColor];
+                 NSLog(@"red");    
+             }
+             else if(k==1){
+                 aView.fillColor = [UIColor brownColor];;  
+                 NSLog(@"purple");    
+             }
+             else if(k==2){
+                 aView.fillColor = [UIColor redColor]; 
+                 NSLog(@"yellow");       
+             }
+             else{
+                 aView.fillColor = [UIColor greenColor];    
+             }
+             
+             aView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+             aView.lineWidth = 3; 
+             aView.alpha=.3;
+             aView.alpha=.2;
+             k=k+1;
+             return aView;
+             
+             
+         }
+  
+     
+     }
+     else if(cloradoColorchaneIndex==2){
+         
+         if ([overlay isKindOfClass:[MKPolygon class]])
+         {
+             if (k==0) {
+                 aView.fillColor =[UIColor blueColor];  
+                 NSLog(@"red");    
+             }
+             else if(k==1){
+                 aView.fillColor = [UIColor brownColor]; 
+                 NSLog(@"purple");    
+             }
+             else if(k==2){
+                 aView.fillColor = [UIColor redColor];
+                 NSLog(@"yellow");       
+             }
+             else{
+                 aView.fillColor = [UIColor purpleColor];   
+             }
+             
+             aView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+             aView.lineWidth = 3; 
+             aView.alpha=.3;
+             aView.alpha=.2;
+             k=k+1;
+             return aView;
+             
+             
+         }
+   
+         
+     }   
+     else if(cloradoColorchaneIndex==3){
+         
+         if ([overlay isKindOfClass:[MKPolygon class]])
+         {
+             if (k==0) {
+                 aView.fillColor =[UIColor cyanColor];  
+                 NSLog(@"red");    
+             }
+             else if(k==1){
+                 aView.fillColor = [UIColor blueColor]; 
+                 NSLog(@"purple");    
+             }
+             else if(k==2){
+                 aView.fillColor = [UIColor brownColor];
+                 NSLog(@"yellow");       
+             }
+             else{
+                 aView.fillColor = [UIColor purpleColor];   
+             }
+             
+             aView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+             aView.lineWidth = 3; 
+             aView.alpha=.3;
+             aView.alpha=.2;
+             k=k+1;
+             return aView;
+             
+             
+         }
+         
+         
+     }   
+   
+        
+        
     }
     else{
         NSLog(@"different color");
-        aView.fillColor = overLayBackGround;
+        if (cloradoColorchaneIndex==0) {
+         aView.fillColor = overLayBackGround;
+        }
+        else if(cloradoColorchaneIndex==1){
+            aView.fillColor=[UIColor colorWithRed:1 green:.55f blue:0 alpha:1];
+        }
+        else if(cloradoColorchaneIndex==2){
+            aView.fillColor=[UIColor greenColor];
+        }
+        else if(cloradoColorchaneIndex==3){
+            aView.fillColor=[UIColor colorWithRed:.73 green:.33f blue:.83 alpha:1];
+        }
+
+            
+        
         aView.alpha=.2;
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
@@ -615,7 +732,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-	return YES;
+	 return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

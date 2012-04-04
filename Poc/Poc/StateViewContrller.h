@@ -36,6 +36,7 @@
     StateEconomicsViewController *stateEconomicsViewController;
     UIColor *overLayBackGround;
     UISegmentedControl *segmentedControl;
+    int cloradoColorchaneIndex;
 }
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
@@ -56,4 +57,6 @@
 -(void) drawPopOver:(CGPoint)pt andCoord:(CLLocationCoordinate2D) coordinate;
 -(UIView *)stateHosingDataForStateName:(NSString *)str withView:(MKPolygonView *)av;
 - (void) pickOne:(id)sender;
+-(void)drawOverLay;
+-(void)drawStateOverLay;
 @end

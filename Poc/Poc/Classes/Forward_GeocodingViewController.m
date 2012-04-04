@@ -193,7 +193,7 @@
     if (currentState) {
     self.popOver=[[UIPopoverController alloc] initWithContentViewController:self.stateDetailPopOverController];
     CGRect rect=CGRectMake(200,300, 290, 100);
-    [self.popOver presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    [self.popOver presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
     
     timer = [NSTimer scheduledTimerWithTimeInterval: 2.0
                                             target: self

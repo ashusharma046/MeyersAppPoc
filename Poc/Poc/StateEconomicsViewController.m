@@ -51,7 +51,7 @@
     
 	navigationBar.barStyle = UIBarStyleBlackOpaque;
 	[navigationBar setBackgroundColor:[UIColor whiteColor]];
-	navigationBar.frame = CGRectMake(0, 0, 330, 50);
+	navigationBar.frame = CGRectMake(0, 0, 332, 50);
 	[self.view addSubview:navigationBar];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonClick)];
     UINavigationItem *item = [[UINavigationItem alloc] init];
@@ -62,7 +62,7 @@
     
     
     
-    self.view.backgroundColor = backgroundImageColor;
+    self.view.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:nil];
     [self.navigationItem setLeftBarButtonItem:leftBarButton];
     
@@ -95,11 +95,6 @@
     request.predicate=myPred;  
     NSError *error;
     NSArray *recordsArray = [context executeFetchRequest:request error:&error]; 
-    NSLog(@"record array count is %d",[recordsArray count]);
-    
-//    for (State_housing_data *rec in recordsArray) {
-//        NSLog(@"matched string is %@and price is %@ and home sales is %@  ",rec.stateName,rec.new_Home_Price,rec.new_Home_Sales);
-//    }
     if ([recordsArray count]>0) {
         
         NSLog(@"economic view controller");
@@ -107,7 +102,7 @@
                         
         demographicLb1.text=[NSString stringWithString:@"Jobs Growth  5000"];
         demographicLb2.text=[NSString stringWithString:@"Permits  10000 "];    
-//    demographicLb3.text=[NSString stringWithFormat:@"Affordability %@",[[recordsArray objectAtIndex:0] valueForKey:@"affordability"]]; 
+
     }    
     
     
